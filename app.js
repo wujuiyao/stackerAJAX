@@ -8,13 +8,17 @@ $(document).ready( function() {
 	});
 });
 
-// this function takes the question object returned by StackOverflow 
+	$('.inspiration-getter').submit(function(event){
+		$(.results).html('');
+  });
+
+// this function takes the question object returned by StackOverflow
 // and creates new result to be appended to DOM
 var showQuestion = function(question) {
-	
+
 	// clone our result template code
 	var result = $('.templates .question').clone();
-	
+
 	// Set the question properties in result
 	var questionElem = result.find('.question-text a');
 	questionElem.attr('href', question.link);
@@ -59,13 +63,13 @@ var showError = function(error){
 // takes a string of semi-colon separated tags to be searched
 // for on StackOverflow
 var getUnanswered = function(tags) {
-	
+
 	// the parameters we need to pass in our request to StackOverflow's API
 	var request = {tagged: tags,
 								site: 'stackoverflow',
 								order: 'desc',
 								sort: 'creation'};
-	
+
 	var result = $.ajax({
 		url: "http://api.stackexchange.com/2.2/questions/unanswered",
 		data: request,
@@ -87,6 +91,3 @@ var getUnanswered = function(tags) {
 		$('.search-results').append(errorElem);
 	});
 };
-
-
-
