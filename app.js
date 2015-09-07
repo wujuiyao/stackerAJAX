@@ -9,9 +9,9 @@ $(document).ready( function() {
 
 	$('.inspiration-getter').submit(function(event){
 		$('.results').html('');
-		var answers = $(this).find("input[name='answerers']").val();
-		console.log(answers);
-		getAnswers(answers);
+		var answerers = $(this).find("input[name='answerers']").val();
+		console.log(answerers);
+		getAnswers(answerers);
   });
 
 });
@@ -52,8 +52,9 @@ var showQuestion = function(question) {
 
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
+//ask Nicholas, the query and resultNum, can they be any variable name? what will defined inside that function
 var showSearchResults = function(query, resultNum) {
-	var results = resultNum + ' results for <strong>' + query;
+	var results = '<br>' + resultNum + ' results for <strong>' + query;
 	return results;
 };
 
@@ -83,7 +84,6 @@ var getUnanswered = function(tags) {
 	})
 	.done(function(result){
 		var searchResults = showSearchResults(request.tagged, result.items.length);
-
 		$('.search-results').html(searchResults);
 
 		$.each(result.items, function(i, item) {
@@ -95,24 +95,70 @@ var getUnanswered = function(tags) {
 		var errorElem = showError(error);
 		$('.search-results').append(errorElem);
 	});
-	console.log(result);
 };
 
+//my code
+var getAnswers = function(answerers){
+	var url = "http://api.stackexchange.com/2.2/tags/" + answerers + "/top-answerers/all_time";
+	var request = { site: 'stackoverflow'};
 
-var getAnswers = function(answers){
-	// parameters that we need to pass
-	var request = {
-		tagged: answers,
-		site: 'stackoverflow',
-		period: 'all_time'
-	};
-
-	var results = $.ajax({
-		url:'http://api.stackexchange.com/2.2/tags/{tag}/top-answerers/all_time',
+	var topAnswers = $.ajax({
+		url: url,
 		data: request,
 		dataType: "jsonp",
-		type: "GET"
+		type: "GET",
+	})
+	.done(function(topAnswers){
+		console.log(topAnswers);
+
+		var searchResults = showSearchResults(answerers, topAnswers.items.length);
+		$('.search-results').html(searchResults);
+		//write functions what happens - display all the titles
+		//first var display all the json data
+		$.each(topAnswers.items, function(index, item){
+
+		});
+	})
+	.fail(function(){
+		console.log("fail");
 	});
 
-	console.log(results);
 };
+
+// var getInspiration = function(tag) {
+//     var url = "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all_time";
+//     var request = {
+//         site: 'stackoverflow'
+//     };
+//
+//     var result = $.ajax({
+//         url: url,
+//         data: request,
+//         dataType: "jsonp",
+//         type: "GET"
+//     }).done(function(result) {
+//         var searchResults = showSearchResults(tag, result.items.length);
+//         $('.search-results').html(searchResults);
+//
+//         $.each(result.items, function(index, item) {
+//             var inspiration = showInspiration(item);
+//             $('.results').append(inspiration);
+//         });
+//     }).fail(function() {
+//         alert('error');
+//     });
+// };
+//
+// var showInspiration = function(item) {
+// 	var result = $('.templates .inspiration').clone();
+// 	var user = result.find('.user a')
+// 		.attr('href', item.user.link)
+// 		.text(item.user.display_name);
+//     var image = "<img src='" + item.user.profile_image + "' alt='" + item.user.display_name + "'>";
+//     $(user).append(image);
+// 	result.find('.post-count').text(item.post_count);
+// 	result.find('.score').text(item.score);
+//
+// 	return result;
+// };
+//
