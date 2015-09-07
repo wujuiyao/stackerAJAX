@@ -116,7 +116,7 @@ var getAnswers = function(answerers){
 		//write functions what happens - display all the titles
 		//first var display all the json data
 		$.each(topAnswers.items, function(index, item){
-
+			console.log(item.user.display_name);
 		});
 	})
 	.fail(function(){
@@ -124,6 +124,18 @@ var getAnswers = function(answerers){
 	});
 
 };
+
+
+// var sum = 0;
+//
+// var arr = [ 1, 2, 3, 4, 5, 6];
+//
+// $.each( arr, function(index, value){
+// 	sum += value;
+// 	console.log(value);
+// });
+//
+// console.log( sum );
 
 // var getInspiration = function(tag) {
 //     var url = "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all_time";
