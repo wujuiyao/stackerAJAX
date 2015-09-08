@@ -19,6 +19,8 @@ $(document).ready( function() {
 
 // this function takes the question object returned by StackOverflow
 // and creates new result to be appended to DOM
+//ask nicholas, why do they add the showQuestion like that
+
 var showQuestion = function(question) {
 
 	// clone our result template code
@@ -48,6 +50,7 @@ var showQuestion = function(question) {
 	);
 	return result;
 };
+
 
 
 // this function takes the results object from StackOverflow
@@ -98,6 +101,38 @@ var getUnanswered = function(tags) {
 };
 
 //my code
+
+// write in this function how I want to display this
+var showAnswer = function(answer) {
+
+	// clone our result template code
+	var result = $('.templates .question').clone();
+
+	// Set the question properties in result
+	var questionElem = result.find('.question-text a');
+	questionElem.attr('href', answer.link);
+	questionElem.text(question.title);
+
+	// set the date asked property in result
+	var asked = result.find('.asked-date');
+	var date = new Date(1000*question.creation_date);
+	asked.text(date.toString());
+
+	// set the #views for question property in result
+	var viewed = result.find('.viewed');
+	viewed.text(question.view_count);
+
+	// set some properties related to asker
+	var asker = result.find('.asker');
+	asker.html('<p>Name: <a target="_blank" href=http://stackoverflow.com/users/' + question.owner.user_id + ' >' +
+													question.owner.display_name +
+												'</a>' +
+							'</p>' +
+ 							'<p>Reputation: ' + question.owner.reputation + '</p>'
+	);
+	return result;
+};
+
 var getAnswers = function(answerers){
 	var url = "http://api.stackexchange.com/2.2/tags/" + answerers + "/top-answerers/all_time";
 	var request = { site: 'stackoverflow'};
@@ -113,10 +148,10 @@ var getAnswers = function(answerers){
 
 		var searchResults = showSearchResults(answerers, topAnswers.items.length);
 		$('.search-results').html(searchResults);
-		//write functions what happens - display all the titles
 		//first var display all the json data
 		$.each(topAnswers.items, function(index, item){
-			console.log(item.user.display_name);
+			var showTop = showAnswer(item);
+			$('.result').append(showTop);
 		});
 	})
 	.fail(function(){
