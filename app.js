@@ -150,12 +150,14 @@ var getAnswers = function(answerers){
 		$('.search-results').html(searchResults);
 		//first var display all the json data
 		$.each(topAnswers.items, function(index, item){
-			var showTop = showAnswer(item);
-			$('.result').append(showTop);
+			var showTopAnswer = showAnswer(item);
+			$('.result').append(showTopAnswer);
 		});
 	})
 	.fail(function(){
 		console.log("fail");
+		var errorElem = showError(error);
+		$('.search-results').append(errorElem);
 	});
 
 };
