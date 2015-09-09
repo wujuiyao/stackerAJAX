@@ -106,36 +106,28 @@ var getUnanswered = function(tags) {
 var showAnswer = function(answer) {
 
 	// clone our result template code
-	var result = $('.templates .question').clone();
+	var result = $('.templates .answer').clone();
 
-	// Set the question properties in result
-	var questionElem = result.find('.question-text a');
-	questionElem.attr('href', answer.link);
-	questionElem.text(question.title);
+	// Set the Name of top answerers, include hyperlink
+	var answerName = result.find('.answerer-name a');
+	answerName.attr('href', answer.user.link);
+	answerName.text(answer.user.display_name);
 
-	// set the date asked property in result
-	var asked = result.find('.asked-date');
-	var date = new Date(1000*question.creation_date);
-	asked.text(date.toString());
+	// // Set the profile image
+	// var asked = result.find('.asked-date');
+	// var date = new Date(1000*question.creation_date);
+	// asked.text(date.toString());
+	//
+	// //Show the score
+	// var viewed = result.find('.viewed');
+	// viewed.text(question.view_count);
 
-	// set the #views for question property in result
-	var viewed = result.find('.viewed');
-	viewed.text(question.view_count);
-
-	// set some properties related to asker
-	var asker = result.find('.asker');
-	asker.html('<p>Name: <a target="_blank" href=http://stackoverflow.com/users/' + question.owner.user_id + ' >' +
-													question.owner.display_name +
-												'</a>' +
-							'</p>' +
- 							'<p>Reputation: ' + question.owner.reputation + '</p>'
-	);
 	return result;
 };
 
 var getAnswers = function(answerers){
 	var url = "http://api.stackexchange.com/2.2/tags/" + answerers + "/top-answerers/all_time";
-	var request = { site: 'stackoverflow'};
+	var request = {site: 'stackoverflow'};
 
 	var topAnswers = $.ajax({
 		url: url,
@@ -145,13 +137,12 @@ var getAnswers = function(answerers){
 	})
 	.done(function(topAnswers){
 		console.log(topAnswers);
-
 		var searchResults = showSearchResults(answerers, topAnswers.items.length);
 		$('.search-results').html(searchResults);
-		//first var display all the json data
+
 		$.each(topAnswers.items, function(index, item){
 			var showTopAnswer = showAnswer(item);
-			$('.result').append(showTopAnswer);
+			$('.results').append(showTopAnswer);
 		});
 	})
 	.fail(function(){
