@@ -30,7 +30,7 @@
 	clear: both;
 }
 
-.inspiration { 
+.inspiration {
 	margin-left: 3em;
 }
 
@@ -43,4 +43,15 @@
 .error {
 	background-color: #F78181;
 	padding: 1em;
+}
+.answer dt{
+	margin-bottom: 5px;
+}
+.answerer-name{
+	font-size: 1.4em;
+	padding-bottom: 5px;
+	display: inline-block;
+}
+.answerer-name a{
+	text-decoration: none;
 }

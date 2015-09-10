@@ -16,7 +16,6 @@ $(document).ready( function() {
 
 });
 
-
 // this function takes the question object returned by StackOverflow
 // and creates new result to be appended to DOM
 //ask nicholas, why do they add the showQuestion like that
@@ -51,8 +50,6 @@ var showQuestion = function(question) {
 	return result;
 };
 
-
-
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
 //ask Nicholas, the query and resultNum, can they be any variable name? what will defined inside that function
@@ -67,7 +64,6 @@ var showError = function(error){
 	var errorText = '<p>' + error + '</p>';
 	errorElem.append(errorText);
 };
-
 
 // takes a string of semi-colon separated tags to be searched
 // for on StackOverflow
@@ -100,9 +96,6 @@ var getUnanswered = function(tags) {
 	});
 };
 
-//my code
-
-// write in this function how I want to display this
 var showAnswer = function(answer) {
 
 	// clone our result template code
@@ -113,12 +106,14 @@ var showAnswer = function(answer) {
 	answerName.attr('href', answer.user.link);
 	answerName.text(answer.user.display_name);
 
-	// // Set the profile image
-	// var asked = result.find('.asked-date');
-	// var date = new Date(1000*question.creation_date);
-	// asked.text(date.toString());
-	//
-	// //Show the score
+	// Set the profile image
+  var profileImage = result.find('.profile-image a');
+	var imageLink = answer.user.profile_image;
+	console.log(imageLink);
+	profileImage.attr('href', answer.user.link);
+	profileImage.prepend('<img src="'+ imageLink + '" alt="">');
+
+	//Show the score
 	// var viewed = result.find('.viewed');
 	// viewed.text(question.view_count);
 
@@ -152,53 +147,3 @@ var getAnswers = function(answerers){
 	});
 
 };
-
-
-// var sum = 0;
-//
-// var arr = [ 1, 2, 3, 4, 5, 6];
-//
-// $.each( arr, function(index, value){
-// 	sum += value;
-// 	console.log(value);
-// });
-//
-// console.log( sum );
-
-// var getInspiration = function(tag) {
-//     var url = "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all_time";
-//     var request = {
-//         site: 'stackoverflow'
-//     };
-//
-//     var result = $.ajax({
-//         url: url,
-//         data: request,
-//         dataType: "jsonp",
-//         type: "GET"
-//     }).done(function(result) {
-//         var searchResults = showSearchResults(tag, result.items.length);
-//         $('.search-results').html(searchResults);
-//
-//         $.each(result.items, function(index, item) {
-//             var inspiration = showInspiration(item);
-//             $('.results').append(inspiration);
-//         });
-//     }).fail(function() {
-//         alert('error');
-//     });
-// };
-//
-// var showInspiration = function(item) {
-// 	var result = $('.templates .inspiration').clone();
-// 	var user = result.find('.user a')
-// 		.attr('href', item.user.link)
-// 		.text(item.user.display_name);
-//     var image = "<img src='" + item.user.profile_image + "' alt='" + item.user.display_name + "'>";
-//     $(user).append(image);
-// 	result.find('.post-count').text(item.post_count);
-// 	result.find('.score').text(item.score);
-//
-// 	return result;
-// };
-//
